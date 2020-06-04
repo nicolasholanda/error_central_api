@@ -1,3 +1,26 @@
+from django.conf import settings
 from django.db import models
 
-# Create your models here.
+LEVEL_CHOICES = [
+    ('ERR', 'error'),
+    ('DBG', 'debug'),
+    ('WRN', 'warning')
+]
+
+ENVIRONMENT_CHOICES = [
+    ('PRD', 'Produção'),
+    ('HML', 'Homologação'),
+    ('DEV', 'Desenvolvimento')
+]
+
+
+class ErrorLog(models.Model):
+    source = models.CharField(max_length=100)
+    description = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+    level = models.CharField(max_length=30, choices=LEVEL_CHOICES)
+    environment = models.CharField(max_length=30, choices=ENVIRONMENT_CHOICES)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.description
