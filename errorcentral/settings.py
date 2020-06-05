@@ -40,7 +40,10 @@ INSTALLED_APPS = [
     # apps
     'errorcentralapp',
     # libs
-    'rest_framework'
+    'djoser',
+    'django_filters',
+    'rest_framework',
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -107,6 +110,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Rest Framework Settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication'
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
