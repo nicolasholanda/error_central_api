@@ -11,6 +11,7 @@ from . import serializers
 class ErrorLogList(mixins.ListModelMixin,
                    mixins.CreateModelMixin,
                    mixins.DestroyModelMixin,
+                   mixins.RetrieveModelMixin,
                    GenericViewSet):
     queryset = ErrorLog.objects.all()
     permission_classes = [IsAuthenticated]
