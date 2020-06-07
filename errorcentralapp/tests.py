@@ -19,7 +19,7 @@ class ViewsTestCase(APITestCase):
         self.create_objects()
 
     def api_authentication(self):
-        self.client.credentials(HTTP_AUTHORIZATION="Token {}".format(self.token))
+        self.client.credentials(HTTP_AUTHORIZATION="Bearer {}".format(self.token))
 
     def create_objects(self):
         ErrorLog.objects.create(description='NullPointerException',

@@ -60,7 +60,7 @@ A resposta será um token parecido com este:
 3 - Copie o token devolvido e adicione um header Authorize para todas as requisições que você for fazer para a api, prefixado pela palavra "Token " (Considere o espaço após a palavra Token). Ficando da seguinte forma:
 ```
 {
-	"Authorize": "Token 828ac2ed6f79fe2270d0a57d4632e5af032c89c1"
+	"Authorize": "Bearer 828ac2ed6f79fe2270d0a57d4632e5af032c89c1"
 }
 ```
 4 - Usuário autenticado! Caso queira fazer logout, utilize o endpoint http://127.0.0.1:8000/auth/token/logout/.

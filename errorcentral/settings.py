@@ -113,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Rest Framework Settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication'
+        'errorcentral.authentication.BearerTokenAuthentication'
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 100
