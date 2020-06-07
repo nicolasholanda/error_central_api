@@ -1,6 +1,8 @@
 # Error Central - API
 Em projetos modernos é cada vez mais comum o uso de arquiteturas baseadas em serviços ou microsserviços. Nestes ambientes complexos, erros podem surgir em diferentes camadas da aplicação (backend, frontend, mobile, desktop) e mesmo em serviços distintos. Desta forma, é muito importante que os desenvolvedores possam centralizar todos os registros de erros em um local, de onde podem monitorar e tomar decisões mais acertadas.
 Com base no que foi descrito acima, o projeto Error Central é um sistema para a centralização de logs de aplicações variadas. A API conta com endpoints que permitem operações de CRUD nos logs.
+## Documentação
+[DOCS](https://documenter.getpostman.com/view/6653675/SztK2kAs)
 ## Ferramentas utilizadas
 - Python
 - Django
@@ -44,7 +46,7 @@ GRANT ALL ON SCHEMA core TO core WITH GRANT OPTION;
 Após criar o banco de dados, rode o comando ``python manage.py runserver``. Pronto!
 ## Autenticação
 1 - Toda requisição para a API deve ser autenticada por um Token. Para isso, crie um usuário com o comando ``python manage.py createsuperuser``
-2 - Faça uma requisição POST para o endpoint http://localhost:8000/api-token-auth/ com o body:
+2 - Faça uma requisição POST para o endpoint http://localhost:8000/auth/token/login/ com o body:
 ```
 {
 	"username": "username_do_usuario",
