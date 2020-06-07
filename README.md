@@ -46,6 +46,7 @@ GRANT ALL ON SCHEMA core TO core WITH GRANT OPTION;
 Após criar o banco de dados, rode o comando ``python manage.py runserver``. Pronto!
 ## Autenticação
 1 - Toda requisição para a API deve ser autenticada por um Token. Para isso, crie um usuário com o comando ``python manage.py createsuperuser``
+
 2 - Faça uma requisição POST para o endpoint http://localhost:8000/auth/token/login/ com o body:
 ```
 {
