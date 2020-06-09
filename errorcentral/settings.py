@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
+import dj_database_url
+import django_heroku
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,13 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '3r5t63llo6n*5ii_&4^#ser!5@w5nogb!xot&w1ve$3u=@(c%y'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['https://error-central-api.herokuapp.com']
 
 # Application definition
 
@@ -43,7 +45,8 @@ INSTALLED_APPS = [
     'djoser',
     'django_filters',
     'rest_framework',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'whitenoise.runserver_nostatic'
 ]
 
 MIDDLEWARE = [
@@ -54,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
 
 ROOT_URLCONF = 'errorcentral.urls'
@@ -83,11 +87,10 @@ WSGI_APPLICATION = 'errorcentral.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'errorcentral',
-        'USER': 'errorcentral',
-        'PASSWORD': 'errorcentral',
-        'HOST': '127.0.0.1',
-        'PORT': '5432'
+        'NAME': os.environ.get('DATABASE_NAME'),
+        'USER': os.environ.get('DATABASE_USER'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+        'DATABASE_URL': os.environ.get('DATABASE_URL')
     }
 }
 
@@ -137,3 +140,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfile')
+
+# Heroku Configuration
+django_heroku.settings(locals())
