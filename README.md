@@ -38,8 +38,8 @@ TABLESPACE = pg_default
 CONNECTION  LIMIT  =  -1;
 
 -- Criar schema
-CREATE SCHEMA core AUTHORIZATION  core; 
-GRANT ALL ON SCHEMA core TO core WITH GRANT OPTION;
+CREATE SCHEMA errorcentral AUTHORIZATION errorcentral; 
+GRANT ALL ON SCHEMA errorcentral TO errorcentral WITH GRANT OPTION;
 ```
 4 - Em um terminal, na pasta do projeto, use o seguinte comando para criar as tabelas: ``python manage.py migrate``
 ## Iniciando o servidor
