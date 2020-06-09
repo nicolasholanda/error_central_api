@@ -6,8 +6,6 @@ install:
 before_script:
   - python manage.py migrate
 script:
-  - python manage.py test --settings=errorcentral.test_settings
+  - pytest
 env:
-  global:
-    - SECRET_KEY=7f6245e78d16c87bb4bc0939
-    - ENV=travis
+  - ENVIRONMENT=travis SECRET_KEY=7f6245e78d16c87bb4bc0939
