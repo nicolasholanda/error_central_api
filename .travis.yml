@@ -1,0 +1,22 @@
+language: python
+python:
+  - "3.7"
+services:
+  - postgresql
+install:
+  - pip install -r requirements.txt
+before_script:
+  - psql -c "CREATE USER errorcentral WITH PASSWORD 'errorcentral';" -U postgres
+  - psql -c "ALTER USER errorcentral WITH SUPERUSER;" -U postgres
+  - psql -c "CREATE DATABASE errorcentral ENCODING = 'UTF8' TABLESPACE = pg_default;" -U postgres
+  - psql -c "CREATE SCHEMA errorcentral AUTHORIZATION errorcentral;" -U postgres
+  - psql -c "GRANT ALL ON SCHEMA errorcentral TO errorcentral WITH GRANT OPTION;" -U postgres
+script:
+  - python manage.py test --settings=errorcentral.test_settings
+env:
+  global:
+  - SECRET_KEY=7f6245e78d16c87bb4bc0939
+  - DATABASE_NAME=errorcentral
+  - DATABASE_USER=errorcentral
+  - DATABASE_PASSWORD=errorcentral
+  - DATABASE_URL=postgres://errorcentral:errorcentral@127.0.0.1:5432/errorcentral
