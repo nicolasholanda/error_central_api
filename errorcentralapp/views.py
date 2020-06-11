@@ -8,7 +8,7 @@ from .models import ErrorLog
 from . import serializers
 
 
-class ErrorLogList(mixins.ListModelMixin,
+class ErrorLogView(mixins.ListModelMixin,
                    mixins.CreateModelMixin,
                    mixins.DestroyModelMixin,
                    mixins.RetrieveModelMixin,
