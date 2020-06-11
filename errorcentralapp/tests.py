@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient, APITestCase
 
-from errorcentralapp.models import ErrorLog
+from errorcentralapp.models import ErrorLog, AppException
 
 
 class ViewsTestCase(APITestCase):
@@ -22,16 +22,20 @@ class ViewsTestCase(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION="Bearer {}".format(self.token))
 
     def create_objects(self):
-        ErrorLog.objects.create(description='NullPointerException',
+        e1 = AppException.objects.create(title='NullPointerException')
+        ErrorLog.objects.create(description='in method save() at line 5',
                                 level='ERR',
                                 environment='DEV',
                                 source='http://127.0.0.1:8080/',
-                                user=self.user)
-        ErrorLog.objects.create(description='BadRequestException',
+                                user=self.user,
+                                exception=e1)
+        e2 = AppException.objects.create(title='BadRequestException')
+        ErrorLog.objects.create(description='in method update() at line 3',
                                 level='WRN',
                                 environment='PRD',
                                 source='https://www.production.com/',
-                                user=self.user)
+                                user=self.user,
+                                exception=e2)
 
     def test_should_retrieve_all_log_list(self):
         response = self.client.get('/logs/')
@@ -54,11 +58,11 @@ class ViewsTestCase(APITestCase):
         self.assertEqual(response.data['results'][0]['level'], 'ERR')
 
     def test_should_retrieve_logs_filtered_by_description(self):
-        response = self.client.get('/logs/?description=bad')
+        response = self.client.get('/logs/?description=update')
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['count'], 1)
-        self.assertEqual(response.data['results'][0]['description'], 'BadRequestException')
+        self.assertEqual(response.data['results'][0]['description'], 'in method update() at line 3')
 
     def test_should_retrieve_logs_filtered_by_source(self):
         response = self.client.get('/logs/?source=www')
@@ -71,7 +75,8 @@ class ViewsTestCase(APITestCase):
         log = {'source': 'http://www.test.com/',
                'environment': 'PRD',
                'level': 'ERR',
-               'description': 'ErrorDescription'}
+               'description': 'ErrorDescription',
+               'exception': 1}
         response = self.client.post('/logs/', data=log, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -94,7 +99,8 @@ class ViewsTestCase(APITestCase):
         log = {'source': 'http://www.test.com/',
                'environment': 'INVALID_ENV',
                'level': 'ERR',
-               'description': 'ErrorDescription'}
+               'description': 'ErrorDescription',
+               'exception': 1}
         response = self.client.post('/logs/', data=log, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -104,8 +110,16 @@ class ViewsTestCase(APITestCase):
         log = {'source': 'http://www.test.com/',
                'environment': 'DEV',
                'level': 'INVALID_LEVEL',
-               'description': 'ErrorDescription'}
+               'description': 'ErrorDescription',
+               'exception': 1}
         response = self.client.post('/logs/', data=log, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data['level'][0], '\"INVALID_LEVEL\" is not a valid choice.')
+
+    def test_should_retrieve_logs_filtered_by_exception(self):
+        response = self.client.get('/logs/?exception=1')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], 1)
+        self.assertEqual(response.data['results'][0]['exception'], 1)

@@ -14,6 +14,13 @@ ENVIRONMENT_CHOICES = [
 ]
 
 
+class AppException(models.Model):
+    title = models.CharField(max_length=150, unique=True)
+
+    def __str__(self):
+        return self.title
+
+
 class ErrorLog(models.Model):
     source = models.CharField(max_length=100)
     description = models.TextField()
@@ -21,6 +28,7 @@ class ErrorLog(models.Model):
     level = models.CharField(max_length=30, choices=LEVEL_CHOICES)
     environment = models.CharField(max_length=30, choices=ENVIRONMENT_CHOICES)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    exception = models.ForeignKey(AppException, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.description
