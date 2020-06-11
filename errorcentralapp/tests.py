@@ -76,7 +76,8 @@ class ViewsTestCase(APITestCase):
                'environment': 'PRD',
                'level': 'ERR',
                'description': 'ErrorDescription',
-               'exception': 1}
+               'exception': {'title': 'BadRequestException'}
+               }
         response = self.client.post('/logs/', data=log, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -100,7 +101,8 @@ class ViewsTestCase(APITestCase):
                'environment': 'INVALID_ENV',
                'level': 'ERR',
                'description': 'ErrorDescription',
-               'exception': 1}
+               'exception': {'title': 'BadRequestException'}
+               }
         response = self.client.post('/logs/', data=log, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -111,7 +113,8 @@ class ViewsTestCase(APITestCase):
                'environment': 'DEV',
                'level': 'INVALID_LEVEL',
                'description': 'ErrorDescription',
-               'exception': 1}
+               'exception': {'title': 'BadRequestException'}
+               }
         response = self.client.post('/logs/', data=log, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

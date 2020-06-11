@@ -4,8 +4,9 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework import mixins
 
 from errorcentralapp.filters import ErrorLogFilterSet
-from .models import ErrorLog
+from .models import ErrorLog, AppException
 from . import serializers
+from .serializers import AppExceptionSerializer
 
 
 class ErrorLogView(mixins.ListModelMixin,
@@ -25,3 +26,12 @@ class ErrorLogView(mixins.ListModelMixin,
         if self.action == 'create':
             return serializers.ErrorLogSerializer
         return serializers.ErrorLogSerializerList
+
+
+class AppExceptionView(mixins.ListModelMixin,
+                       mixins.CreateModelMixin,
+                       GenericViewSet):
+    queryset = AppException.objects.all()
+    permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    serializer_class = AppExceptionSerializer

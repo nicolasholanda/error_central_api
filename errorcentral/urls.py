@@ -7,6 +7,7 @@ from errorcentralapp import views
 
 router = routers.DefaultRouter()
 router.register(r'logs', views.ErrorLogView)
+router.register(r'exceptions', views.AppExceptionView)
 
 
 urlpatterns = [
