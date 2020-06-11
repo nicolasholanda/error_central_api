@@ -20,6 +20,21 @@ class AppExceptionSerializerCreate(serializers.ModelSerializer):
         }
 
 
+class ErrorLogSerializerSummary(serializers.ModelSerializer):
+    events = serializers.IntegerField()
+    exception = AppExceptionSerializer()
+
+    class Meta:
+        model = ErrorLog
+        fields = ['level', 'source', 'environment', 'exception', 'events']
+
+    def to_representation(self, instance):
+        exception = AppException(id=instance.pop('exception__id'),
+                                 title=instance.pop('exception__title'))
+        instance['exception'] = exception
+        return super().to_representation(instance)
+
+
 class ErrorLogSerializerList(serializers.ModelSerializer):
     class Meta:
         model = ErrorLog
