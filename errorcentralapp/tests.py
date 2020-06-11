@@ -126,3 +126,19 @@ class ViewsTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['count'], 1)
         self.assertEqual(response.data['results'][0]['exception'], 1)
+
+    def test_should_retrieve_summaries(self):
+        response = self.client.get('/summaries/')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], 2)
+        self.assertEqual(response.data['results'][0]['exception']['id'], 1)
+        self.assertEqual(response.data['results'][0]['events'], 1)
+
+    def test_should_retrieve_summaries_filtered_by_exception(self):
+        response = self.client.get('/summaries/?exception=1')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], 1)
+        self.assertEqual(response.data['results'][0]['exception']['id'], 1)
+        self.assertEqual(response.data['results'][0]['events'], 1)
