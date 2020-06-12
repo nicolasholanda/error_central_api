@@ -6,7 +6,9 @@ from rest_framework.authtoken.views import obtain_auth_token
 from errorcentralapp import views
 
 router = routers.DefaultRouter()
-router.register(r'logs', views.ErrorLogList)
+router.register(r'logs', views.ErrorLogView)
+router.register(r'exceptions', views.AppExceptionView)
+router.register(r'summaries', views.ErrorLogListView)
 
 
 urlpatterns = [

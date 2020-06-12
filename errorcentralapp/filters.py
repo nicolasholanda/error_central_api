@@ -8,6 +8,7 @@ class ErrorLogFilterSet(filters.FilterSet):
     source = filters.CharFilter(field_name='source', lookup_expr='icontains')
     environment = filters.CharFilter(field_name='environment', lookup_expr='exact')
     description = filters.CharFilter(field_name='description', lookup_expr='icontains')
+    exception = filters.NumberFilter(field_name='exception', lookup_expr='exact')
 
     class Meta:
         model = ErrorLog
