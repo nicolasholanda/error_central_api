@@ -1,1 +1,1 @@
-web: gunicorn errorcentral.wsgi
+web: gunicorn errorcentral.wsgi --max-requests 1200

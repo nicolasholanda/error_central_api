@@ -25,7 +25,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://error-central-api.herokuapp.com']
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -43,8 +43,7 @@ INSTALLED_APPS = [
     'djoser',
     'django_filters',
     'rest_framework',
-    'rest_framework.authtoken',
-    'whitenoise.runserver_nostatic'
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -56,7 +55,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware'
+]
+
+# CORS Configuration
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:4200'
 ]
 
 # CORS Configuration
@@ -88,23 +91,16 @@ WSGI_APPLICATION = 'errorcentral.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-if os.environ.get('ENVIRONMENT') == 'travis':
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'errorcentral',
+        'USER': 'errorcentral',
+        'PASSWORD': 'errorcentral',
+        'HOST': '127.0.0.1',
+        'PORT': '5432'
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.environ.get('DATABASE_NAME'),
-            'USER': os.environ.get('DATABASE_USER'),
-            'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-            'DATABASE_URL': os.environ.get('DATABASE_URL')
-        }
-    }
+}
 
 
 # Password validation
@@ -146,16 +142,3 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
-
-STATIC_URL = '/static/'
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfile')
-
-# Heroku Configuration
-if os.environ.get('ENVIRONMENT') != 'travis':
-    import django_heroku
-    django_heroku.settings(locals())
