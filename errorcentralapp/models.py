@@ -14,6 +14,10 @@ ENVIRONMENT_CHOICES = [
 ]
 
 
+class Agent(models.Model):
+    address = models.CharField(max_length=200)
+
+
 class AppException(models.Model):
     title = models.CharField(max_length=150, unique=True)
 
@@ -22,13 +26,13 @@ class AppException(models.Model):
 
 
 class ErrorLog(models.Model):
-    source = models.CharField(max_length=100)
     description = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
     level = models.CharField(max_length=30, choices=LEVEL_CHOICES)
     environment = models.CharField(max_length=30, choices=ENVIRONMENT_CHOICES)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     exception = models.ForeignKey(AppException, on_delete=models.CASCADE)
+    agent = models.ForeignKey(Agent, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.description

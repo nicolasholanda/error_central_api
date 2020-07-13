@@ -26,7 +26,7 @@ class ErrorLogSerializerSummary(serializers.ModelSerializer):
 
     class Meta:
         model = ErrorLog
-        fields = ['level', 'source', 'environment', 'exception', 'events']
+        fields = ['level', 'agent', 'environment', 'exception', 'events']
 
     def to_representation(self, instance):
         exception = AppException(id=instance.pop('exception__id'),
@@ -46,7 +46,7 @@ class ErrorLogSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ErrorLog
-        fields = ['id', 'description', 'source', 'date', 'level', 'environment', 'exception']
+        fields = ['id', 'description', 'agent', 'date', 'level', 'environment', 'exception']
 
     def create(self, validated_data):
         exception_title = validated_data.pop('exception')['title']

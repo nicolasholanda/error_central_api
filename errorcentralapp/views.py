@@ -19,7 +19,7 @@ class ErrorLogListView(mixins.ListModelMixin,
     serializer_class = ErrorLogSerializerSummary
 
     def get_queryset(self):
-        return ErrorLog.objects.values('exception__id', 'exception__title', 'level', 'source', 'environment').annotate(
+        return ErrorLog.objects.values('exception__id', 'exception__title', 'level', 'agent', 'environment').annotate(
             events=Count('id')
         )
 
