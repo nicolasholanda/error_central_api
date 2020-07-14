@@ -1,27 +1,24 @@
-from django.core.exceptions import ObjectDoesNotExist
+from djoser.serializers import UserSerializer
 from rest_framework import serializers
 
-from .models import ErrorLog, AppException
+from .models import ErrorLog, AppException, Agent
+
+
+class AgentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Agent
+        fields = '__all__'
 
 
 class AppExceptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = AppException
-        fields = '__all__'
-
-
-class AppExceptionSerializerCreate(serializers.ModelSerializer):
-    class Meta:
-        model = AppException
-        fields = ['title']
-        extra_kwargs = {
-            'id': {'read_only': False},
-            'title': {'validators': []}
-        }
+        fields = ['id', 'title']
 
 
 class ErrorLogSerializerSummary(serializers.ModelSerializer):
     events = serializers.IntegerField()
+    agent = AgentSerializer()
     exception = AppExceptionSerializer()
 
     class Meta:
@@ -31,28 +28,26 @@ class ErrorLogSerializerSummary(serializers.ModelSerializer):
     def to_representation(self, instance):
         exception = AppException(id=instance.pop('exception__id'),
                                  title=instance.pop('exception__title'))
+
+        agent = Agent(id=instance.pop('agent__id'),
+                      address=instance.pop('agent__address'))
+
         instance['exception'] = exception
+        instance['agent'] = agent
         return super().to_representation(instance)
 
 
 class ErrorLogSerializerList(serializers.ModelSerializer):
+    agent = AgentSerializer()
+    exception = AppExceptionSerializer()
+    user = UserSerializer()
+
     class Meta:
         model = ErrorLog
         fields = '__all__'
 
 
-class ErrorLogSerializer(serializers.ModelSerializer):
-    exception = AppExceptionSerializerCreate()
-
+class ErrorLogSerializerCreate(serializers.ModelSerializer):
     class Meta:
         model = ErrorLog
-        fields = ['id', 'description', 'agent', 'date', 'level', 'environment', 'exception']
-
-    def create(self, validated_data):
-        exception_title = validated_data.pop('exception')['title']
-        try:
-            exception = AppException.objects.filter(title__iexact=exception_title).get()
-        except ObjectDoesNotExist:
-            exception = AppException.objects.create(title=exception_title)
-        validated_data['exception'] = exception
-        return ErrorLog.objects.create(**validated_data)
+        fields = ['description', 'agent', 'level', 'environment', 'exception']
