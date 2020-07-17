@@ -9,6 +9,7 @@ router = routers.DefaultRouter()
 router.register(r'logs', views.ErrorLogView)
 router.register(r'exceptions', views.AppExceptionView)
 router.register(r'summaries', views.SummaryView)
+router.register(r'agents', views.AgentView)
 
 
 urlpatterns = [

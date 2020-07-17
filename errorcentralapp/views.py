@@ -6,9 +6,9 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework import mixins
 
 from errorcentralapp.filters import ErrorLogFilterSet
-from .models import ErrorLog, AppException
+from .models import ErrorLog, AppException, Agent
 from . import serializers
-from .serializers import AppExceptionSerializer, ErrorLogSerializerSummary
+from .serializers import AppExceptionSerializer, ErrorLogSerializerSummary, AgentSerializer
 
 
 class SummaryView(mixins.ListModelMixin,
@@ -60,3 +60,11 @@ class AppExceptionView(mixins.ListModelMixin,
     search_fields = ['title']
     ordering_fields = ['title']
     serializer_class = AppExceptionSerializer
+
+
+class AgentView(mixins.ListModelMixin,
+                mixins.CreateModelMixin,
+                GenericViewSet):
+    queryset = Agent.objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class = AgentSerializer
