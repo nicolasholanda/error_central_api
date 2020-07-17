@@ -3,7 +3,7 @@
 Em projetos modernos é cada vez mais comum o uso de arquiteturas baseadas em serviços ou microsserviços. Nestes ambientes complexos, erros podem surgir em diferentes camadas da aplicação (backend, frontend, mobile, desktop) e mesmo em serviços distintos. Desta forma, é muito importante que os desenvolvedores possam centralizar todos os registros de erros em um local, de onde podem monitorar e tomar decisões mais acertadas.
 Com base no que foi descrito acima, o projeto Error Central é um sistema para a centralização de logs de aplicações variadas. A API conta com endpoints que permitem operações de CRUD nos logs.
 ## Documentação
-[DOCS](https://documenter.getpostman.com/view/6653675/SztK2kAs)
+[DOCS](https://app.swaggerhub.com/apis-docs/nicolasholanda/error-central/1.0.0)
 ## Ferramentas utilizadas
 - Python
 - Django
@@ -11,6 +11,9 @@ Com base no que foi descrito acima, o projeto Error Central é um sistema para a
 - Djoser
 - PostgreSQL
 - Django Filters
+- Travis
+- Heroku
+- Pytest
 ## Como utilizar
 ### Criando ambiente virtual
 1 - Abra um terminal na raiz do projeto
