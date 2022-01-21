@@ -8,7 +8,7 @@ django-templated-mail==1.1.1
 djangorestframework==3.11.0
 djangorestframework-jwt==1.11.0
 djoser==2.0.3
-ipython==7.15.0
+ipython==7.16.3
 ipython-genutils==0.2.0
 jedi==0.17.0
 parso==0.7.0
